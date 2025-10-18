@@ -66,7 +66,7 @@ func main() {
 	})
 
 	// Start server
-	fmt.Println("🚀 Wallpaper API Server starting on http://localhost:8080")
+	fmt.Println("🚀 Wallpaper API Server starting on http://localhost:8664")
 	fmt.Println("📁 Place your images in:")
 	fmt.Println("   - images/nature/")
 	fmt.Println("   - images/culture/")
@@ -77,7 +77,7 @@ func main() {
 	fmt.Println("   - GET /api/v1/wallpapers/digital")
 	fmt.Println("   - GET /api/v1/wallpapers/{category}/random")
 
-	log.Fatal(r.Run(":8080"))
+	log.Fatal(r.Run(":8664"))
 }
 
 func getWallpapersByCategory(c *gin.Context) {
@@ -196,7 +196,7 @@ func loadWallpapersFromFolder(category string) ([]Wallpaper, error) {
 		wallpaper := Wallpaper{
 			ID:         id,
 			Title:      generateRandomTitle(category),
-			ImageURL:   fmt.Sprintf("http://localhost:8080/images/%s/%s", category, file.Name()),
+			ImageURL:   fmt.Sprintf("http://localhost:8664/images/%s/%s", category, file.Name()),
 			Category:   strings.Title(category),
 			Tags:       generateRandomTags(category),
 			Resolution: getRandomResolution(),
