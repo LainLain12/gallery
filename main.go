@@ -92,7 +92,7 @@ func getWallpapersByCategory(c *gin.Context) {
 		return
 	}
 
-	wallpapers, err := loadWallpapersFromFolder(category)
+	wallpapers, err := loadWallpapersFromFolder(c, category)
 	if err != nil {
 		c.JSON(500, APIResponse{
 			Success: false,
@@ -119,7 +119,7 @@ func getRandomWallpaper(c *gin.Context) {
 		return
 	}
 
-	wallpapers, err := loadWallpapersFromFolder(category)
+	wallpapers, err := loadWallpapersFromFolder(c, category)
 	if err != nil {
 		c.JSON(500, APIResponse{
 			Success: false,
@@ -150,7 +150,7 @@ func getAllWallpapers(c *gin.Context) {
 	allWallpapers := []Wallpaper{}
 
 	for _, category := range categories {
-		wallpapers, err := loadWallpapersFromFolder(category)
+		wallpapers, err := loadWallpapersFromFolder(c, category)
 		if err != nil {
 			log.Printf("Error loading %s wallpapers: %v", category, err)
 			continue
@@ -171,7 +171,7 @@ func getCategories(c *gin.Context) {
 	})
 }
 
-func loadWallpapersFromFolder(category string) ([]Wallpaper, error) {
+func loadWallpapersFromFolder(c *gin.Context, category string) ([]Wallpaper, error) {
 	folderPath := filepath.Join("images", category)
 
 	files, err := ioutil.ReadDir(folderPath)
@@ -192,11 +192,18 @@ func loadWallpapersFromFolder(category string) ([]Wallpaper, error) {
 			continue
 		}
 
+		// Generate dynamic base URL from request
+		scheme := "http"
+		if c.Request.TLS != nil {
+			scheme = "https"
+		}
+		baseURL := fmt.Sprintf("%s://%s", scheme, c.Request.Host)
+
 		// Generate wallpaper data
 		wallpaper := Wallpaper{
 			ID:         id,
 			Title:      generateRandomTitle(category),
-			ImageURL:   fmt.Sprintf("http://localhost:8664/images/%s/%s", category, file.Name()),
+			ImageURL:   fmt.Sprintf("%s/images/%s/%s", baseURL, category, file.Name()),
 			Category:   strings.Title(category),
 			Tags:       generateRandomTags(category),
 			Resolution: getRandomResolution(),
