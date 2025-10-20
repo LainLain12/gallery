@@ -1,0 +1,34 @@
+Privacy Policy for Roay Wallpaper
+Last Updated: [Insert Date: e.g., October 19, 2025]
+
+This Privacy Policy governs the use of the Roay Wallpaper mobile application (the "Service").
+
+We highly value your privacy and are committed to protecting your personal information. Our Service is designed to function primarily offline and does not directly collect, use, or share any Personal Information except as described in this policy.
+
+1. Information We Do Not Collect
+Our Service, [Your App Name], does not directly collect any Personally Identifiable Information (PII) from you, such as your name, email address, physical address, or phone number.
+
+2. Permissions and Device Access
+The app requires specific device permissions solely to perform its core functions:
+
+Images/Media Access (Storage Permission): This permission is required only to allow the app to display the pre-packaged wallpaper images and to enable you to save or set a wallpaper to your device. We do not access, read, or collect any other photos or personal files from your device.
+
+Set as Wallpaper Functionality: This feature requires system-level permission to modify your device's background, which is done locally on your device and does not transmit any data to us.
+
+3. Automatically Collected Data (Third-Party Services)
+While we do not collect data directly, your use of the App may involve data collection by third-party service providers and the platform itself:
+
+Log Data / Crash Reporting: In the event of an error or crash within the app, we may use third-party tools (such as Google’s crash reporting services) to collect information called Log Data. This data is non-personally identifiable and typically includes information like your device's IP address, device name, operating system version, and the time and date of the app crash. This is used solely for bug fixing and improving app stability.
+
+Platform Providers (e.g., Google Play Store): The platform where you downloaded the app may collect general usage and device information. Their data handling is governed by their own privacy policies.
+
+4. Children’s Privacy
+Our Service is not directed at children under the age of 13. We do not knowingly collect personally identifiable information from children under 13. If a parent or guardian becomes aware that their child has provided us with personal information, please contact us immediately so we can take necessary action.
+
+5. Changes to This Privacy Policy
+We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. Changes to this Privacy Policy are effective when they are posted on this page.
+
+6. Contact Us
+If you have any questions or suggestions about this Privacy Policy, please do not hesitate to contact us:
+
+Email:  apirlsukyi1245@gmail.com

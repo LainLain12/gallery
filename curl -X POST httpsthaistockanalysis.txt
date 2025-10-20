@@ -1,0 +1,9 @@
+curl -X POST https://thaistockanalysis.com/api/market-data-close \
+  -H "Content-Type: application/json" \
+  -d '{
+    "date": "2025-10-17",
+    "morning_close": {
+      "index": 1281.04,
+      "change": 1.50
+    }
+  }'

@@ -55,12 +55,14 @@ func main() {
 		api.GET("/wallpapers/:category/random", getRandomWallpaper)
 		api.GET("/wallpapers", getAllWallpapers)
 		api.GET("/categories", getCategories)
+		api.GET("/privacy-policy", getPrivacyPolicyJSON)
 	}
 
 	// Serve static images
 	r.Static("/images", "./images")
 
-	// Health check
+	// Privacy policy HTML route
+	r.GET("/privacy-policy", getPrivacyPolicy) // Health check
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok", "message": "Wallpaper API is running"})
 	})
@@ -76,6 +78,8 @@ func main() {
 	fmt.Println("   - GET /api/v1/wallpapers/culture")
 	fmt.Println("   - GET /api/v1/wallpapers/digital")
 	fmt.Println("   - GET /api/v1/wallpapers/{category}/random")
+	fmt.Println("   - GET /privacy-policy (HTML)")
+	fmt.Println("   - GET /api/v1/privacy-policy (JSON)")
 
 	log.Fatal(r.Run(":8664"))
 }
@@ -194,7 +198,7 @@ func loadWallpapersFromFolder(c *gin.Context, category string) ([]Wallpaper, err
 
 		// Generate dynamic base URL from request
 		scheme := "http"
-		if c.Request.TLS != nil {
+		if c.Request.TLS != nil || c.GetHeader("X-Forwarded-Proto") == "https" || c.Request.Header.Get("X-Forwarded-Proto") == "https" {
 			scheme = "https"
 		}
 		baseURL := fmt.Sprintf("%s://%s", scheme, c.Request.Host)
@@ -294,4 +298,75 @@ func generateRandomTags(category string) []string {
 
 func getRandomResolution() string {
 	return resolutions[rand.Intn(len(resolutions))]
+}
+
+func getPrivacyPolicy(c *gin.Context) {
+	// Read privacy policy file
+	content, err := ioutil.ReadFile("privacy_policy.txt")
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Privacy policy not found"})
+		return
+	}
+
+	// Return as HTML
+	html := fmt.Sprintf(`
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Privacy Policy - Roal Wallpaper</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        pre {
+            white-space: pre-wrap;
+            font-family: Arial, sans-serif;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Privacy Policy</h1>
+        <pre>%s</pre>
+    </div>
+</body>
+</html>`, string(content))
+
+	c.Header("Content-Type", "text/html")
+	c.String(200, html)
+}
+
+func getPrivacyPolicyJSON(c *gin.Context) {
+	// Read privacy policy file
+	content, err := ioutil.ReadFile("privacy_policy.txt")
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Privacy policy not found"})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"success":        true,
+		"privacy_policy": string(content),
+		"last_updated":   "October 18, 2025",
+	})
 }
